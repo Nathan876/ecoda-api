@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response} from "express";
+import {Request, Response} from "express";
 import { verifyCredentials, signToken } from "../services/auth.service";
 import { loginRequestSchema } from "../schemas/auth.schemas";
 import {revoke} from "../services/token-blacklist.service";
@@ -27,5 +27,4 @@ export async function logout(req: Request, res: Response): Promise<Response> {
     await revoke(token, exp);
 
     return res.status(200).json({ message: "Logged out successfully" });
-
 }
