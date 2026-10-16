@@ -5,23 +5,19 @@ export type ActionStatus = "proposed" | "validated" | "to_retry";
 export interface ActionRecord {
     id: number;
     challengeId: number;
-    actionDate: Date;
+    actionDate: string;
     status: ActionStatus;
     validatedAt: Date | null;
 }
 
 export async function validateAction(userId: number, challengeId: number): Promise<ActionRecord | null> {
-    const {rows} = await db.query(
+    const { rows } = await db.query(
         `INSERT INTO challenge_actions (user_id, challenge_id, action_date, status, validated_at)
-         VALUES ($1, $2, CURRENT_DATE, 'validated', now()) ON CONFLICT (user_id, challenge_id, action_date)
-         DO
-        UPDATE SET status = 'validated', validated_at = now()
-        WHERE challenge_actions.status <> 'validated'
-            RETURNING id
-            , challenge_id
-            , action_date
-            , status
-            , validated_at`,
+         VALUES ($1, $2, CURRENT_DATE, 'validated', now())
+             ON CONFLICT (user_id, challenge_id, action_date)
+         DO UPDATE SET status = 'validated', validated_at = now()
+            WHERE challenge_actions.status <> 'validated'
+                RETURNING id, challenge_id, action_date::text AS action_date, status, validated_at`,
         [userId, challengeId]
     );
     const row = rows[0];
