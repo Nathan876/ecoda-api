@@ -20,7 +20,9 @@ export async function findUserByEmail(email: string): Promise<UserRecord | null>
         [email]
     );
     const row = rows[0];
-    if (!row) return null;
+    if (!row) {
+        return null;
+    }
 
     return {
         id: row.id,
@@ -31,7 +33,6 @@ export async function findUserByEmail(email: string): Promise<UserRecord | null>
 }
 
 export async function findUserById(id: number): Promise<UserProfile | null> {
-
     const { rows } = await db.query(
         "SELECT id, email, first_name, created_at FROM users WHERE id = $1",
         [id]
