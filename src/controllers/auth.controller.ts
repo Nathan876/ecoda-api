@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 import { verifyCredentials, signToken } from "../services/auth.service";
 import { loginRequestSchema } from "../schemas/auth.schemas";
+import {revoke} from "../services/token-blacklist.service";
 
 export async function login(req: Request, res: Response): Promise<Response> {
     const parseResult = loginRequestSchema.safeParse(req.body);
@@ -16,4 +17,15 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     return res.status(200)
         .json({ token: signToken(user) });
+}
+
+export async function logout(req: Request, res: Response): Promise<Response> {
+
+    const token = res.locals.token;
+    const exp = res.locals.user.exp;
+
+    await revoke(token, exp);
+
+    return res.status(200).json({ message: "Logged out successfully" });
+
 }

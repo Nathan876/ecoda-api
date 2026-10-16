@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { login } from "../controllers/auth.controller";
+import {login, logout} from "../controllers/auth.controller";
 import { registry } from "../openapi/registry";
 import { loginRequestSchema, loginResponseSchema } from "../schemas/auth.schemas";
 import { errorResponseSchema } from "../schemas/common.schemas";
+import {authenticate} from "../middlewares/auth.middleware";
 
 const router = Router();
 
@@ -35,5 +36,6 @@ registry.registerPath({
 router.post("/login", login);
 
 // À coder : POST /auth/logout (révocation du token via blacklist Redis).
+router.post("/logout", authenticate, logout);
 
 export default router;
