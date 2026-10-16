@@ -1,5 +1,9 @@
 import { OpenApiGeneratorV3 } from "@asteasolutions/zod-to-openapi";
 import { registry } from "../openapi/registry";
+import "../routes/health.routes";
+import "../routes/auth.routes";
+import "../routes/users.routes";
+import "../routes/actions.routes";
 
 // Imports en effet de bord : chaque fichier de route appelle
 // registry.registerPath(...) à son chargement. Les importer ici garantit
