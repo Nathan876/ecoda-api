@@ -14,6 +14,8 @@ export const validateActionResponseSchema = z
         actionDate: z.string().meta({ example: "2026-10-16" }),
         status: z.literal("validated"),
         pointsEarned: z.number().int().meta({ example: 20 }),
+        totalScore: z.number().int().meta({ example: 120 }),
+        newBadges: z.array(z.string()).meta({ example: ["premier_pas"] }),
     })
     .meta({ id: "ValidateActionResponse" });
 

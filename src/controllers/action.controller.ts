@@ -24,5 +24,7 @@ export async function validate(req: Request, res: Response): Promise<Response> {
         actionDate: result.action.actionDate,
         status: result.action.status,
         pointsEarned: result.pointsEarned,
+        totalScore: result.totalScore,
+        newBadges: result.newBadges,
     });
 }
